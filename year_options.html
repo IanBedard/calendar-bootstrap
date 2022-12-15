@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Javascripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <!-- Project Files -->
+    <link rel="stylesheet" href="jquery.bootstrap.year.calendar.min.css">
+    <script src="jquery.bootstrap.year.calendar.min.js"></script>
+    <!--Title-->
+    <title>Jquery Bootstrap Year Calendar - Changing Start Year</title>
+    <style>
+
+    .jqyc-appended{
+        background-color: rgb(246, 74, 27);
+        color: white;
+        border-radius:5px ;
+    }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="calendar"></div>
+</div>
+<script>
+            //payday loop
+let startDate = new Date(2021, 11, 8);
+function addWeeks(date, weeks) {
+  date.setDate(date.getDate() + 7 * weeks);
+  return date;
+}
+const payDaysList = [];
+ for(let i = 0; i < (78 +1); i++){
+    payDay = addWeeks(startDate, 2)
+
+payDaysList.push(moment(payDay).format('YYYY, MM, D'));
+
+ };
+
+
+/***/
+    $('.calendar').calendar({
+        startYear: 2023,
+        maxYear: 2024,
+        minYear: 2022,
+        startFromSunday: true,
+        l10n:{
+            jan: "janvier",
+            feb: "février",
+            mar: "mars",
+            apr: "avril",
+            may: "mai",
+            jun: "juin",
+            jul: "juillet",
+            aug: "août",
+            sep: "septembre",
+            oct: "octobre",
+            nov: "novembre",
+            dec: "décembre",
+            mn: "lu",
+            tu: "ma",
+            we: 'me',
+            th: 'je',
+            fr: 've',
+            sa: 'sa',
+            su: 'di'
+        }
+     
+    });
+   
+ 
+
+payDaysList.forEach(element => {
+    let newDateFormat = element.split(',');
+    let year = Number(newDateFormat[0])
+    let month = Number(newDateFormat[1])
+    let day = Number(newDateFormat[2])
+
+ appendToCalendar();
+    $('.calendar').on('jqyc.changeYear', function (event) {
+        appendToCalendar();
+    });
+       function appendToCalendar() {
+        $('.calendar').calendar('appendText', '', year, month, day, 'event');
+    
+    }
+ 
+
+});
+    
+</script>
+</body>
+</html>
