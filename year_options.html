@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -23,40 +23,45 @@
     <title>Jquery Bootstrap Year Calendar - Changing Start Year</title>
     <style>
 
-    .jqyc-appended{
-        background-color: rgb(246, 74, 27);
+
+    .weekends{
+        background-color: lightgrey;
+    }
+    .text-muted{
+        display: none;
+    }
+    .wednesday{
+        background-color: rgb(57, 114, 205);
         color: white;
         border-radius:5px ;
     }
+    .jqyc-year{
+        font-size: 50px;
+        font-weight: 500;
+    }
+    #hover-text{
+        transition-timing-function: ease-in-out;
+        position: absolute;
+        padding: 5px;
+        font-weight: 400;
+        opacity: 0;
+    }
+    
     </style>
-</head>
+</head> 
 <body>
 <div class="container">
     <div class="calendar"></div>
 </div>
 <script>
-            //payday loop
-let startDate = new Date(2021, 11, 8);
-function addWeeks(date, weeks) {
-  date.setDate(date.getDate() + 7 * weeks);
-  return date;
-}
-const payDaysList = [];
- for(let i = 0; i < (78 +1); i++){
-    payDay = addWeeks(startDate, 2)
-
-payDaysList.push(moment(payDay).format('YYYY, MM, D'));
-
- };
-
-
-/***/
+/*Calendar properties*/
     $('.calendar').calendar({
         startYear: 2023,
-        maxYear: 2024,
-        minYear: 2022,
+        maxYear: 2023,
+        minYear: 20231,
         startFromSunday: true,
-        l10n:{
+        /*Change Language to french*/
+        /*l10n:{
             jan: "janvier",
             feb: "février",
             mar: "mars",
@@ -76,12 +81,27 @@ payDaysList.push(moment(payDay).format('YYYY, MM, D'));
             fr: 've',
             sa: 'sa',
             su: 'di'
-        }
+        },*/
+        
      
     });
    
- 
+/** Wednesday info**/
+let startDate = new Date(2021, 11, 8);
+/** function addWeek addWeeks(DATE, number of week)**/
+function addWeeks(date, weeks) {
+  date.setDate(date.getDate() + 7 * weeks);
+  return date;
+}
+const payDaysList = [];
+ for(let i = 0; i < (78 +1); i++){
+    payDay = addWeeks(startDate, 2)
 
+payDaysList.push(moment(payDay).format('YYYY, MM, D'));
+
+ };
+
+/** Wednesday Loop**/
 payDaysList.forEach(element => {
     let newDateFormat = element.split(',');
     let year = Number(newDateFormat[0])
@@ -93,13 +113,58 @@ payDaysList.forEach(element => {
         appendToCalendar();
     });
        function appendToCalendar() {
-        $('.calendar').calendar('appendText', '', year, month, day, 'event');
+        $('.calendar').calendar('appendText', '', year, month, day, 'wed');
     
     }
  
 
 });
-    
+
+/** Weekends info**/
+let Weekends = []
+let firstSat = new Date(2021, 11, 18)
+let firstSun = new Date(2021, 11, 19)
+for(let i = 0; i < (157 +1); i++){
+  weekend = addWeeks(firstSun, 1)
+Weekends.push(moment(weekend).format('YYYY, MM, D'));
+weekend2 = addWeeks(firstSat, 1)
+Weekends.push(moment(weekend2).format('YYYY, MM, D'));
+ }
+/** Weekends Loop **/
+Weekends.forEach(element => {
+    let newDateFormat = element.split(',');
+    let year = Number(newDateFormat[0])
+    let month = Number(newDateFormat[1])
+    let day = Number(newDateFormat[2])
+
+ appendToCalendar();
+    $('.calendar').on('jqyc.changeYear', function (event) {
+        appendToCalendar();
+    });
+       function appendToCalendar() {
+        $('.calendar').calendar('appendText', '', year, month, day, 'weekends');
+    }
+});
+/** Class applier**/
+$( ".wed" ).parent().addClass("wednesday");
+$( ".weekends" ).parent().addClass("weekends");
+$(".btn").click(()=>{
+console.log("clicked");
+})
+
+/*Hover Text
+$( ".wednesday" ).hover(
+  function() {
+    $( this ).append( $( "<span id='hover-text'  class='badge bg-primary'>payday</span>" ) );
+    $( "#hover-text" ).animate({
+    width: "70px",
+    height: "30px",
+    opacity: 1,
+  }, 700 );
+  }, function() {
+    $( this ).find( "span" ).last().remove();
+  }
+);*/
 </script>
 </body>
 </html>
